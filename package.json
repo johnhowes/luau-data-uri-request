@@ -1,8 +1,8 @@
 {
-  "name": "luau-url-encoding",
+  "name": "luau-data-uri-request",
   "version": "0.1.0",
-  "description": "Encodes luau formData as x-www-form-urlencoded.",
-  "main": "index.js",
+  "description": "Completes a request for a data URI.",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha test --compilers js:babel-register --require babel-polyfill",
     "lint": "jshint *.js --exclude-path /node_modules/**",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/johnhowes/luau-url-encoding.git"
+    "url": "git+https://github.com/johnhowes/luau-data-uri-request.git"
   },
   "keywords": [
     "lynx",
@@ -19,9 +19,9 @@
   "author": "John Howes",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/johnhowes/luau-url-encoding/issues"
+    "url": "https://github.com/johnhowes/luau-data-uri-request/issues"
   },
-  "homepage": "https://github.com/johnhowes/luau-url-encoding#readme",
+  "homepage": "https://github.com/johnhowes/luau-data-uri-request#readme",
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "babel-plugin-transform-async-to-generator": "^6.8.0",

@@ -2,26 +2,51 @@ const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
 const should = chai.should();
 chai.use(chaiAsPromised);
-const sut = require("../");
+const dataURIRequest = require("../src");
 
-describe("url encoded form data", function () {
-  it("should encode each name value pair according to the rules of the media type", function (done) {
-    var formData = {};
-    formData.entries = new Set();
-    formData.entries.add(["name", "George Burns"]);
-    formData.entries.add(["gibberish", "!@#$%^&*() ''"]);
-    
+describe("data URI request", function () {
+  it("should respond to request.send() with the requested content", function (done) {
     var ctx = {
       request: {
-        enctype: "application/x-www-form-urlencoded",
-        formData: formData
+        url: "data:text/plain;charset=utf-8,Hello%2C%20World%21"
       }
     };
     
-    sut(ctx, async () => {}).then(() => {
-      ctx.request.content.type.should.equal("application/x-www-form-urlencoded");
-      ctx.request.content.data.toString().should.equal("name=George+Burns&gibberish=!%40%23%24%25%5E%26*()+%27%27");
-      done();
+    dataURIRequest(ctx, async () => {}).then(() => {
+      ctx.request.send().then(() => {
+        ctx.response.type.should.equal("text/plain;charset=utf-8");
+        ctx.response.data.toString().should.equal("Hello, World!");
+        done();
+      }).catch(done);
     }).catch(done);
+  });
+  
+  it("should handle a base64 data URI", function (done) {
+    var ctx = {
+      request: {
+        url: "data:text/plain;charset=utf-8;base64,SGVsbG8sIFdvcmxkIQ=="
+      }
+    };
+    
+    dataURIRequest(ctx, async () => {}).then(() => {
+      ctx.request.send().then(() => {
+        ctx.response.type.should.equal("text/plain;charset=utf-8");
+        ctx.response.data.toString().should.equal("Hello, World!");
+        done();
+      }).catch(done);
+    }).catch(done);
+  });
+  
+  it("should ignore requests for other protocols", function (done) {
+    var ctx = {
+      request: {
+        url: "http://example.com"
+      }
+    };
+    
+    dataURIRequest(ctx, async () => {
+      should.not.exist(ctx.request.send);
+      done();
+    });
   });
 });
