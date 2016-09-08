@@ -3,6 +3,7 @@
 "use strict";
 
 const url = require("url");
+const Buffer = require("buffer").Buffer;
 
 module.exports = exports = async (ctx, next) => {
   var parsedURL = url.parse(ctx.request.url);
